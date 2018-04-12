@@ -608,6 +608,10 @@ public class Micropolis
 
 			collectTaxPartial();
 
+			//Every month collect money from commercial zones
+			if (cityTime % 4 == 0) {
+				collectCommercial();
+			}
 			if (cityTime % TAXFREQ == 0) {
 				collectTax();
 				evaluation.cityEvaluation();
@@ -1748,6 +1752,33 @@ public class Micropolis
 		fireEffect = b.fireRequest != 0 ?
 			(int)Math.floor(1000.0 * (double)b.fireFunded / (double)b.fireRequest) :
 			1000;
+	}
+	
+	//Collect money from each commercial zone based on its land value
+	//Designed to be run one a month
+	void collectCommercial() {
+		
+		for (int y = 0; y < map.length; y++)
+		{
+			for (int x = 0; x < map[y].length; x++)
+			{
+				int tilevalue = getTile(x,y);
+				TileSpec ts = Tiles.get(tilevalue);
+				int pop =  ts.getPopulation() / 8;
+				//Only add funds for powered commercial buildings with a population greater than 0
+				if (pop > 0 && isZoneCenter(tilevalue) && isCommercialZone(tilevalue) && isTilePowered(x, y) )
+				{
+					ZoneStatus zs = queryZoneStatus(x, y);
+					switch (zs.landValue) {
+					case 5: budget.totalFunds += 1; break; //Slum
+					case 6: budget.totalFunds += 5; break; //Lower Class
+					case 7: budget.totalFunds += 10; break; //Middle Class
+					case 8: budget.totalFunds += 20; break; //High Class
+					}
+				}
+			}
+		}
+		fireFundsChanged();
 	}
 
 	public static class FinancialHistory

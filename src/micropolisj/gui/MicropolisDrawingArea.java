@@ -24,7 +24,9 @@ public class MicropolisDrawingArea extends JComponent
 {
 	Micropolis m;
 	boolean blinkUnpoweredZones = true;
+	boolean blinkCommercialZones = true;
 	HashSet<Point> unpoweredZones = new HashSet<Point>();
+	HashSet<Point> commercialZones = new HashSet<Point>();
 	boolean blink;
 	Timer blinkTimer;
 	ToolCursor toolCursor;
@@ -186,6 +188,20 @@ public class MicropolisDrawingArea extends JComponent
 					if (blink)
 						cell = LIGHTNINGBOLT;
 				}
+				//Blink a dollar sign for each commercial zone generating money
+				if (blinkCommercialZones &&
+						isZoneCenter(cell) &&
+						isCommercialZone(cell) && 
+						m.isTilePowered(x, y))
+					{
+						TileSpec ts = Tiles.get(cell);
+						int pop =  ts.getPopulation() / 8;
+						if (pop > 0) {
+							commercialZones.add(new Point(x,y));
+							if (blink)
+								cell = DOLLAR;
+						}
+					}
 
 				if (toolPreview != null) {
 					int c = toolPreview.getTile(x, y);
@@ -419,14 +435,27 @@ public class MicropolisDrawingArea extends JComponent
 	
 	void doBlink()
 	{
+		boolean didBlink = false;
 		if (!unpoweredZones.isEmpty())
 		{
-			blink = !blink;
 			for (Point loc : unpoweredZones)
 			{
 				repaint(getTileBounds(loc.x, loc.y));
 			}
 			unpoweredZones.clear();
+			didBlink = true;
+		}
+		if (!commercialZones.isEmpty())
+		{
+			for (Point loc : commercialZones)
+			{
+				repaint(getTileBounds(loc.x, loc.y));
+			}
+			commercialZones.clear();
+			didBlink = true;
+		}
+		if (didBlink) {
+			blink = !blink;
 		}
 	}
 
