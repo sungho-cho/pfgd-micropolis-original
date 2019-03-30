@@ -2351,6 +2351,11 @@ public class Micropolis
 		assert !hasSprite(SpriteKind.GOD);
 		sprites.add(new MonsterSprite(this, xpos, ypos));
 	}
+	
+	public void makeHero(int xpos, int ypos)
+	{
+		sprites.add(new HeroSprite(this, xpos, ypos));
+	}
 
 	public void makeTornado()
 	{
