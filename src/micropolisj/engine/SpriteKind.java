@@ -21,7 +21,7 @@ public enum SpriteKind
 	TOR(6,3),
 	EXP(7,6),
 	BUS(8,4),
-	HERO(9,8);
+	HERO(9,4);
 
 	public final int objectId;
 	public final int numFrames;

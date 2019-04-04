@@ -8,12 +8,10 @@
 
 package micropolisj.engine;
 
-import static micropolisj.engine.TileConstants.*;
-
 /**
  * Implements a hero sprite.
  */
-public class HeroSprite extends Sprite
+public abstract class HeroSprite extends Sprite
 {
 	int destX;
 	int destY;
@@ -26,10 +24,11 @@ public class HeroSprite extends Sprite
 	// 4 : west
 
 	// movement deltas
-	static int [] Gx = {  0, 2, 0, -2};
-	static int [] Gy = { -2, 0, 2,  0};
+	static int [] Gx = {  0, 1, 0, -1};
+	static int [] Gy = { -1, 0, 1,  0};
 	int [] cornerX = new int[4];
 	int [] cornerY = new int[4];
+	boolean chasingDisaster;
 
 	public HeroSprite(Micropolis engine, int xpos, int ypos)
 	{
@@ -57,6 +56,13 @@ public class HeroSprite extends Sprite
 
 		this.frame = 2;
 	}
+	
+	
+	protected abstract int getDisasterX();
+	
+	protected abstract int getDisasterY();
+	
+	protected abstract void handleDisaster();
 
 	@Override
 	public void moveImpl()
@@ -64,12 +70,23 @@ public class HeroSprite extends Sprite
 		if (this.frame == 0) {
 			return;
 		}
-		
-		if (getDis(x, y, destX, destY) < 1) {
-			step = (step + 1) % 4;
-			destX = cornerX[step] * 16 + 8;
-			destY = cornerY[step] * 16 + 8;
+			
+		if (getDis(x, y, destX, destY) < 20) {
+			if (chasingDisaster) handleDisaster();
+			
+			if (getDisasterX() >= 0 && getDisasterY() >= 0) {
+				destX = getDisasterX();
+				destY = getDisasterY();
+				chasingDisaster = true;
+			}
+			else {
+				step = (step + 1) % 4;
+				destX = cornerX[step] * 16 + 8;
+				destY = cornerY[step] * 16 + 8;
+				chasingDisaster = false;
+			}
 		}
+		else chasingDisaster = false;
 		
 		int c = getDir(x, y, destX, destY);
 		c = (c - 1) / 2 + 1;   //convert to one of four basic headings
@@ -78,7 +95,19 @@ public class HeroSprite extends Sprite
 		frame = c;
 		assert this.frame >= 1 && this.frame <= 4;
 
-		this.x += Gx[c-1];
-		this.y += Gy[c-1];
+		if (chasingDisaster) {
+			this.x += Gx[c-1] * 8;
+			this.y += Gy[c-1] * 8;
+		}
+		else {
+			this.x += Gx[c-1] * 4;
+			this.y += Gy[c-1] * 4;
+		}
+		
+		if (getDisasterX() >= 0 && getDisasterY() >= 0) {
+			destX = getDisasterX();
+			destY = getDisasterY();
+			chasingDisaster = true;
+		}
 	}
 }

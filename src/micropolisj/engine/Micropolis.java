@@ -1538,7 +1538,7 @@ public class Micropolis
 		}
 	}
 
-	Sprite getSprite(SpriteKind kind)
+	public Sprite getSprite(SpriteKind kind)
 	{
 		for (Sprite s : sprites) {
 			if (s.kind == kind)
@@ -2352,9 +2352,10 @@ public class Micropolis
 		sprites.add(new MonsterSprite(this, xpos, ypos));
 	}
 	
-	public void makeHero(int xpos, int ypos)
+	public void makeMonsterHunter(int xpos, int ypos)
 	{
-		sprites.add(new HeroSprite(this, xpos, ypos));
+		if (hasSprite(SpriteKind.HERO)) return;
+		else sprites.add(new MonsterHunterSprite(this, xpos, ypos));
 	}
 
 	public void makeTornado()
