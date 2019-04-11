@@ -9,7 +9,7 @@
 package micropolisj.engine;
 
 /**
- * Implements a hero sprite.
+ * Implements a monster hunter sprite.
  */
 public class MonsterHunterSprite extends HeroSprite
 {

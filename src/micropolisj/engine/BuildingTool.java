@@ -52,12 +52,17 @@ class BuildingTool extends ToolStroke
 		case AIRPORT:
 			return applyZone(eff, AIRPORT);
 			
-		case NEW_BUILDING:
+		case MONSTER_HUNTER:
+			if (city.hasSprite(SpriteKind.HERO)) return false;
+			
+			// Bulldoze this building right away
 			city.makeMonsterHunter(xpos, ypos);
 			Bulldozer dozer = new Bulldozer(city, 0,0);
 			dozer.dozeField(eff);
+			
+			// Spend cost
+			city.spend(tool.getToolCost());
 			return true;
-//			return applyZone(eff, NEW_BUILDING); //If the tile we're applying is the NEW_BUILDING, use applyZone to place a NEW_BUILDING tile
 
 		default:
 			// not expected
