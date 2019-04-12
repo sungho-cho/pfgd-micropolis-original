@@ -133,7 +133,6 @@ public class ToolStroke
 		if (bi == null) {
 			throw new Error("Cannot applyZone to #"+base);
 		}
-
 		int cost = tool.getToolCost();
 		boolean canBuild = true;
 		for (int rowNum = 0; rowNum < bi.height; rowNum++) {
@@ -156,7 +155,7 @@ public class ToolStroke
 			eff.toolResult(ToolResult.UH_OH);
 			return false;
 		}
-
+		
 		eff.spend(cost);
 
 		int i = 0;

@@ -41,7 +41,13 @@ class MapScanner extends TileBehavior
 		STADIUM_EMPTY,
 		STADIUM_FULL,
 		AIRPORT,
-		SEAPORT;
+		SEAPORT,
+		MONSTER_HUNTER,
+		FIRE_FIGHTER,
+		FLOOD_STOPPER,
+		TORNADO_DESTROYER,
+		EARTHQUAKE_CONTROLLER,
+		MELTDOWN_HANDLER,
 	}
 
 	@Override
@@ -83,6 +89,13 @@ class MapScanner extends TileBehavior
 			return;
 		case SEAPORT:
 			doSeaport();
+			return;
+		case MONSTER_HUNTER:
+		case FIRE_FIGHTER:
+		case FLOOD_STOPPER:
+		case TORNADO_DESTROYER:
+		case EARTHQUAKE_CONTROLLER:
+		case MELTDOWN_HANDLER:
 			return;
 		default:
 			assert false;
