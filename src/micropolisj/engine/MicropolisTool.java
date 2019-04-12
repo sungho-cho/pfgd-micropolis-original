@@ -29,7 +29,12 @@ public enum MicropolisTool
 	POWERPLANT(4, 3000),
 	NUCLEAR(4, 5000),
 	AIRPORT(6, 10000),
-	MONSTER_HUNTER(1, 100), 
+	MONSTER_HUNTER(1, 4000), 
+	FIRE_FIGHTER(1, 2000), 
+	FLOOD_STOPPER(1, 2000), 
+	TORNADO_DESTROYER(1, 3000), 
+	EARTHQUAKE_CONTROLLER(1, 8000), 
+	MELTDOWN_HANDLER(1, 8000), 
 	QUERY(1, 0);
 
 	int size;
@@ -70,6 +75,11 @@ public enum MicropolisTool
 		case NUCLEAR:
 		case AIRPORT:
 		case MONSTER_HUNTER:
+		case FIRE_FIGHTER:
+		case FLOOD_STOPPER:
+		case TORNADO_DESTROYER:
+		case EARTHQUAKE_CONTROLLER:
+		case MELTDOWN_HANDLER:
 			return new BuildingTool(engine, this, xpos, ypos);
 
 		default:

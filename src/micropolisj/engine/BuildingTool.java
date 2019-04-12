@@ -53,14 +53,44 @@ class BuildingTool extends ToolStroke
 			return applyZone(eff, AIRPORT);
 			
 		case MONSTER_HUNTER:
-			if (city.hasSprite(SpriteKind.HERO)) return false;
-			
-			// Bulldoze this building right away
+			if (city.hasSprite(SpriteKind.MONSTER_HUNTER)) return false;
 			city.makeMonsterHunter(xpos, ypos);
-			Bulldozer dozer = new Bulldozer(city, 0,0);
-			dozer.dozeField(eff);
+			doze(eff);
+			city.spend(tool.getToolCost());
+			return true;
 			
-			// Spend cost
+		case FIRE_FIGHTER:
+			if (city.hasSprite(SpriteKind.FIRE_FIGHTER)) return false;
+			city.makeFireFighter(xpos, ypos);
+			doze(eff);
+			city.spend(tool.getToolCost());
+			return true;
+			
+		case FLOOD_STOPPER:
+			if (city.hasSprite(SpriteKind.FLOOD_STOPPER)) return false;
+			city.makeFloodStopper(xpos, ypos);
+			doze(eff);
+			city.spend(tool.getToolCost());
+			return true;
+			
+		case TORNADO_DESTROYER:
+			if (city.hasSprite(SpriteKind.TORNADO_DESTROYER)) return false;
+			city.makeTornadoDestroyer(xpos, ypos);
+			doze(eff);
+			city.spend(tool.getToolCost());
+			return true;
+			
+		case EARTHQUAKE_CONTROLLER:
+			if (city.hasSprite(SpriteKind.EARTHQUAKE_CONTROLLER)) return false;
+			city.makeEarthquakeController(xpos, ypos);
+			doze(eff);
+			city.spend(tool.getToolCost());
+			return true;
+			
+		case MELTDOWN_HANDLER:
+			if (city.hasSprite(SpriteKind.MELTDOWN_HANDLER)) return false;
+			city.makeMeltdownHandler(xpos, ypos);
+			doze(eff);
 			city.spend(tool.getToolCost());
 			return true;
 
@@ -68,5 +98,11 @@ class BuildingTool extends ToolStroke
 			// not expected
 			throw new Error("unexpected tool: "+tool);
 		}
+	}
+	
+	// Bulldoze this building right away
+	void doze(ToolEffectIfc eff) {
+		Bulldozer dozer = new Bulldozer(city, 0,0);
+		dozer.dozeField(eff);
 	}
 }

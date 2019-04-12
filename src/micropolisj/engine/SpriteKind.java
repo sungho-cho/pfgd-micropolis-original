@@ -21,7 +21,12 @@ public enum SpriteKind
 	TOR(6,3),
 	EXP(7,6),
 	BUS(8,4),
-	HERO(9,4);
+	MONSTER_HUNTER(9,4),
+	FIRE_FIGHTER(10,4),
+	FLOOD_STOPPER(11,4),
+	TORNADO_DESTROYER(12,4),
+	EARTHQUAKE_CONTROLLER(13,4),
+	MELTDOWN_HANDLER(14,4);
 
 	public final int objectId;
 	public final int numFrames;

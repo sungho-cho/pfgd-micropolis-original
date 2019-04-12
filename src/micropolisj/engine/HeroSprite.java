@@ -30,9 +30,9 @@ public abstract class HeroSprite extends Sprite
 	int [] cornerY = new int[4];
 	boolean chasingDisaster;
 
-	public HeroSprite(Micropolis engine, int xpos, int ypos)
+	public HeroSprite(Micropolis engine, int xpos, int ypos, SpriteKind kind)
 	{
-		super(engine, SpriteKind.HERO);
+		super(engine, kind);
 		this.x = xpos * 16 + 8;
 		this.y = ypos * 16 + 8;
 		this.width = 48;

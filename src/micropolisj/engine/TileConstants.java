@@ -150,7 +150,12 @@ public class TileConstants
 	static final char VBRDG1 = 949;
 	static final char VBRDG2 = 950;
 	static final char VBRDG3 = 951;
-	static final char MONSTER_HUNTER = 964; //Tile id for the NEW_BUILDING tile. This is the id of the center of the tile as listed in tiles.rc
+	static final char MONSTER_HUNTER = 964;
+	static final char FIRE_FIGHTER = 973;
+	static final char FLOOD_STOPPER = 982;
+	static final char TORNADO_DESTROYER = 991;
+	static final char EARTHQUAKE_CONTROLLER = 1000;
+	static final char MELTDOWN_HANDLER = 1009;
 	public static final char LAST_TILE = 968;
 
 	static final char [] RoadTable = new char[] {

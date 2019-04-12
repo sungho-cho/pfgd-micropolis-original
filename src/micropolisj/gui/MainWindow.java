@@ -1047,11 +1047,19 @@ public class MainWindow extends JFrame
 
 		b6.add(makeToolBtn(MicropolisTool.AIRPORT));
 		
-		//Add the MONSTER_HUNTER icon to the tool bar
+		//Add the ONE PIECE HERO icons to the tool bar
 		c.gridy++;
 		Box b7 = new Box(BoxLayout.X_AXIS);
 		gridBox.add(b7,c);
 		b7.add(makeToolBtn(MicropolisTool.MONSTER_HUNTER));
+		b7.add(makeToolBtn(MicropolisTool.FIRE_FIGHTER));
+		b7.add(makeToolBtn(MicropolisTool.FLOOD_STOPPER));
+		c.gridy++;
+		Box b8 = new Box(BoxLayout.X_AXIS);
+		gridBox.add(b8,c);
+		b8.add(makeToolBtn(MicropolisTool.TORNADO_DESTROYER));
+		b8.add(makeToolBtn(MicropolisTool.EARTHQUAKE_CONTROLLER));
+		b8.add(makeToolBtn(MicropolisTool.MELTDOWN_HANDLER));
 
 		// add glue to make all elements align toward top
 		c.gridy++;

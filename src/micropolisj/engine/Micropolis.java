@@ -198,6 +198,8 @@ public class Micropolis
 	static final int VALVERATE = 2;
 	public static final int CENSUSRATE = 4;
 	static final int TAXFREQ = 48;
+	
+	public boolean earthquakeStopped = false;
 
 	public void spend(int amount)
 	{
@@ -282,7 +284,11 @@ public class Micropolis
 	void fireEarthquakeStarted()
 	{
 		for (EarthquakeListener l : earthquakeListeners) {
-			l.earthquakeStarted();
+			if (l instanceof EarthquakeControllerSprite) l.earthquakeStarted();
+		}
+		
+		for (EarthquakeListener l : earthquakeListeners) {
+			if (!earthquakeStopped) l.earthquakeStarted();
 		}
 	}
 
@@ -1462,6 +1468,11 @@ public class Micropolis
 		bb.put("COAL", new MapScanner(this, MapScanner.B.COAL));
 		bb.put("NUCLEAR", new MapScanner(this, MapScanner.B.NUCLEAR));
 		bb.put("MONSTER_HUNTER", new MapScanner(this, MapScanner.B.MONSTER_HUNTER));
+		bb.put("FIRE_FIGHTER", new MapScanner(this, MapScanner.B.FIRE_FIGHTER));
+		bb.put("FLOOD_STOPPER", new MapScanner(this, MapScanner.B.FLOOD_STOPPER));
+		bb.put("TORNADO_DESTROYER", new MapScanner(this, MapScanner.B.TORNADO_DESTROYER));
+		bb.put("EARTHQUAKE_CONTROLLER", new MapScanner(this, MapScanner.B.EARTHQUAKE_CONTROLLER));
+		bb.put("MELTDOWN_HANDLER", new MapScanner(this, MapScanner.B.MELTDOWN_HANDLER));
 		bb.put("FIRESTATION", new MapScanner(this, MapScanner.B.FIRESTATION));
 		bb.put("POLICESTATION", new MapScanner(this, MapScanner.B.POLICESTATION));
 		bb.put("STADIUM_EMPTY", new MapScanner(this, MapScanner.B.STADIUM_EMPTY));
@@ -1869,6 +1880,8 @@ public class Micropolis
 
 	void doMeltdown(int xpos, int ypos)
 	{
+		if (hasSprite(SpriteKind.MELTDOWN_HANDLER)) return;
+		
 		meltdownLocation = new CityLocation(xpos, ypos);
 
 		makeExplosion(xpos - 1, ypos - 1);
@@ -2239,8 +2252,12 @@ public class Micropolis
 
 	public void makeEarthquake()
 	{
-		makeSound(centerMassX, centerMassY, Sound.EXPLOSION_LOW);
 		fireEarthquakeStarted();
+		if (earthquakeStopped) {
+			earthquakeStopped = false;
+			return;
+		}
+		makeSound(centerMassX, centerMassY, Sound.EXPLOSION_LOW);
 
 		sendMessageAt(MicropolisMessage.EARTHQUAKE_REPORT, centerMassX, centerMassY);
 		int time = PRNG.nextInt(701) + 300;
@@ -2261,6 +2278,8 @@ public class Micropolis
 
 	void setFire()
 	{
+		if (hasSprite(SpriteKind.FIRE_FIGHTER)) return;
+		
 		int x = PRNG.nextInt(getWidth());
 		int y = PRNG.nextInt(getHeight());
 		int t = getTile(x, y);
@@ -2354,8 +2373,42 @@ public class Micropolis
 	
 	public void makeMonsterHunter(int xpos, int ypos)
 	{
-		if (hasSprite(SpriteKind.HERO)) return;
+		if (hasSprite(SpriteKind.MONSTER_HUNTER)) return;
 		else sprites.add(new MonsterHunterSprite(this, xpos, ypos));
+	}
+	
+	public void makeFireFighter(int xpos, int ypos)
+	{
+		if (hasSprite(SpriteKind.FIRE_FIGHTER)) return;
+		else sprites.add(new FireFighterSprite(this, xpos, ypos));
+	}
+	
+	public void makeFloodStopper(int xpos, int ypos)
+	{
+		if (hasSprite(SpriteKind.FLOOD_STOPPER)) return;
+		else sprites.add(new FloodStopperSprite(this, xpos, ypos));
+	}
+	
+	public void makeTornadoDestroyer(int xpos, int ypos)
+	{
+		if (hasSprite(SpriteKind.TORNADO_DESTROYER)) return;
+		else sprites.add(new TornadoDestroyerSprite(this, xpos, ypos));
+	}
+	
+	public void makeEarthquakeController(int xpos, int ypos)
+	{
+		if (hasSprite(SpriteKind.EARTHQUAKE_CONTROLLER)) return;
+		else {
+			EarthquakeControllerSprite ecs = new EarthquakeControllerSprite(this, xpos, ypos);
+			earthquakeListeners.add(ecs);
+			sprites.add(ecs);
+		}
+	}
+	
+	public void makeMeltdownHandler(int xpos, int ypos)
+	{
+		if (hasSprite(SpriteKind.MELTDOWN_HANDLER)) return;
+		else sprites.add(new MeltdownHandlerSprite(this, xpos, ypos));
 	}
 
 	public void makeTornado()
@@ -2377,6 +2430,8 @@ public class Micropolis
 
 	public void makeFlood()
 	{
+		if (hasSprite(SpriteKind.FLOOD_STOPPER)) return;
+		
 		final int [] DX = { 0, 1, 0, -1 };
 		final int [] DY = { -1, 0, 1, 0 };
 
